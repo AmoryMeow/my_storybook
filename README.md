@@ -1,12 +1,8 @@
-# Component Storybook
+# My Storybook
 
-A lightweight React and TypeScript workspace for building independent, reusable UI components with Storybook. The repository intentionally starts without application-specific components or a testing stack.
+A personal collection of reusable React components, UI experiments, and accessibility-focused implementations, built with React, TypeScript, Vite, and Storybook.
 
-## Structure
-
-- `src/components/` — reusable components, grouped into their own folders as they are added
-- `src/stories/` — the minimal Storybook setup check; future component stories can live beside their components
-- `.storybook/` — Storybook configuration
+Future independent components and their stories belong in `src/components/`.
 
 ## Getting started
 
@@ -16,19 +12,20 @@ Install dependencies:
 npm install
 ```
 
-Start Storybook at `http://localhost:6006`:
+Run the Vite app:
+
+```sh
+npm run dev
+```
+
+Run Storybook at `http://localhost:6006`:
 
 ```sh
 npm run storybook
 ```
 
-The Vite placeholder app is available with `npm run dev` when needed.
-
-## Verification
+Create a production Storybook build with:
 
 ```sh
-npm run typecheck
-npm run lint
-npm run build
 npm run build-storybook
 ```

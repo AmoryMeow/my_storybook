@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 const meta = {
-  title: 'Project/Storybook setup',
+  title: 'Welcome',
   parameters: {
     layout: 'centered',
   },
@@ -10,11 +10,11 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Ready: Story = {
+export const Welcome: Story = {
   render: () => (
-    <div>
-      <h1>Storybook is ready</h1>
-      <p>Add reusable components under src/components.</p>
-    </div>
+    <main>
+      <h1>My Storybook</h1>
+      <p>Reusable React components, UI experiments, and accessible patterns.</p>
+    </main>
   ),
 }

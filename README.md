@@ -4,6 +4,8 @@ A personal collection of reusable React components, UI experiments, and accessib
 
 Future independent components and their stories belong in `src/components/`.
 
+Tailwind CSS v4 is available in both the Vite app and Storybook. Global styles are loaded from `src/index.css`; no Tailwind configuration file is needed for the current setup.
+
 ## Getting started
 
 Install dependencies:

@@ -1,6 +1,6 @@
 export { TreeTable } from './TreeTable'
 export type {
   TreeTableColumn,
-  TreeTableColumnAlignment,
+  TreeTableKey,
   TreeTableProps,
-} from './TreeTable'
+} from './TreeTable.types'

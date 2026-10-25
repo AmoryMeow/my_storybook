@@ -520,10 +520,18 @@ export const Basic: Story = {
     const firstRow = canvas.getByText('Color system').closest('tr')
 
     expect(firstRow).not.toBeNull()
+    const firstRowCells = within(firstRow!).getAllByRole('gridcell')
+
     nameHeader.focus()
     await userEvent.keyboard('{ArrowDown}')
 
-    await expect(within(firstRow!).getAllByRole('gridcell')[0]).toHaveFocus()
+    await expect(firstRowCells[0]).toHaveFocus()
+
+    await userEvent.keyboard('{End}')
+    await expect(firstRowCells.at(-1)).toHaveFocus()
+
+    await userEvent.keyboard('{Home}')
+    await expect(firstRowCells[0]).toHaveFocus()
   },
 }
 

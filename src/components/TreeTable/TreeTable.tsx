@@ -269,6 +269,7 @@ function TreeTableCellContent<RowData>({
     if (!edit || !editable || readOnly || disabled) {
       return;
     }
+    ignoreNextBlurRef.current = false;
     setDraft(getEditorValue(column, row));
     setError(undefined);
     setIsEditing(true);

@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { expect, userEvent, within } from 'storybook/test'
+import { expect, userEvent, waitFor, within } from 'storybook/test'
 
 import {
   TreeTable,
@@ -622,6 +622,138 @@ export const InlineEditing: Story = {
     getRowKey,
   },
   render: () => <EditingExample />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement)
+    const originalValue = canvas.getByText('Color system')
+    const nameCell = originalValue.closest('td')
+
+    expect(nameCell).not.toBeNull()
+
+    await step('Escape cancels editing and restores cell focus', async () => {
+      nameCell!.focus()
+      await userEvent.keyboard('{Enter}')
+
+      const editor = canvas.getByRole('textbox', {
+        name: 'Edit Name for Color system',
+      })
+
+      await expect(editor).toHaveFocus()
+      await userEvent.clear(editor)
+      await userEvent.type(editor, 'Changed name')
+      await userEvent.keyboard('{Escape}')
+
+      await expect(canvas.getByText('Color system')).toBeInTheDocument()
+      await expect(canvas.queryByText('Changed name')).not.toBeInTheDocument()
+      await waitFor(() => expect(nameCell).toHaveFocus())
+    })
+
+    await step('Invalid values keep the editor open', async () => {
+      nameCell!.focus()
+      await userEvent.keyboard('{Enter}')
+
+      const editor = canvas.getByRole('textbox', {
+        name: 'Edit Name for Color system',
+      })
+
+      await userEvent.clear(editor)
+      await userEvent.keyboard('{Enter}')
+
+      await expect(editor).toHaveAttribute('aria-invalid', 'true')
+      await expect(canvas.getByRole('alert')).toHaveTextContent(
+        'Name is required.',
+      )
+      await expect(editor).toHaveFocus()
+    })
+
+    await step('Enter commits a valid value and restores focus', async () => {
+      const editor = canvas.getByRole('textbox', {
+        name: 'Edit Name for Color system',
+      })
+
+      await userEvent.type(editor, 'Updated color system')
+      await userEvent.keyboard('{Enter}')
+
+      await expect(
+        canvas.getByText('Updated color system'),
+      ).toBeInTheDocument()
+      await expect(canvas.queryByRole('alert')).not.toBeInTheDocument()
+      await waitFor(() => expect(nameCell).toHaveFocus())
+    })
+
+    await step('Numeric editors reject non-numeric characters', async () => {
+      const updatedRow = canvas.getByText('Updated color system').closest('tr')
+
+      expect(updatedRow).not.toBeNull()
+      const itemsCell = within(updatedRow!).getAllByRole('gridcell')[1]
+
+      itemsCell.focus()
+      await userEvent.keyboard('{Enter}')
+
+      const editor = canvas.getByRole('textbox', {
+        name: 'Edit Items for Updated color system',
+      })
+
+      await userEvent.clear(editor)
+      await userEvent.type(editor, '12x')
+      await expect(editor).toHaveValue('12')
+      await userEvent.keyboard('{Escape}')
+
+      await expect(itemsCell).toHaveTextContent('8')
+      await waitFor(() => expect(itemsCell).toHaveFocus())
+    })
+
+    await step('Read-only and disabled cells do not open editors', async () => {
+      const updatedRow = canvas.getByText('Updated color system').closest('tr')
+      const disabledRow = canvas.getByText('Disclosure').closest('tr')
+
+      expect(updatedRow).not.toBeNull()
+      expect(disabledRow).not.toBeNull()
+
+      const readOnlyBudgetCell = within(updatedRow!).getAllByRole('gridcell')[3]
+      readOnlyBudgetCell.focus()
+      await userEvent.keyboard('{Enter}')
+      await expect(
+        canvas.queryByRole('textbox', {
+          name: 'Edit Budget for Updated color system',
+        }),
+      ).not.toBeInTheDocument()
+      await expect(readOnlyBudgetCell).toHaveFocus()
+
+      const disabledBudgetCell = within(disabledRow!).getAllByRole('gridcell')[3]
+      disabledBudgetCell.focus()
+      await userEvent.keyboard('{Enter}')
+      await expect(
+        canvas.queryByRole('textbox', {
+          name: 'Edit Budget for Disclosure',
+        }),
+      ).not.toBeInTheDocument()
+      await expect(disabledBudgetCell).toHaveFocus()
+    })
+
+    await step('Blur commits the current value', async () => {
+      const cellContent = nameCell!.querySelector(':scope > div')
+
+      expect(cellContent).not.toBeNull()
+      await userEvent.dblClick(cellContent!)
+
+      const editor = canvas.getByRole('textbox', {
+        name: 'Edit Name for Updated color system',
+      })
+
+      await expect(editor).toHaveFocus()
+      await expect(editor).toHaveAttribute('placeholder', 'Enter a name')
+      await userEvent.clear(editor)
+      await userEvent.type(editor, 'Saved on blur')
+      await userEvent.click(
+        canvas.getByRole('columnheader', { name: 'Items' }),
+      )
+
+      await waitFor(() =>
+        expect(canvas.getByText('Saved on blur')).toBeInTheDocument(),
+      )
+      await waitFor(() => expect(nameCell).toHaveFocus())
+    })
+  },
 }
 
 export const ActionsAndLinks: Story = {

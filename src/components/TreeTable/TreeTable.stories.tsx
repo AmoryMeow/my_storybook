@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, userEvent, within } from 'storybook/test'
 
 import {
   TreeTable,
@@ -513,6 +514,17 @@ export const Basic: Story = {
     minTableWidth: '44rem',
   },
   render: (args) => <TreeTable {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const nameHeader = canvas.getByRole('columnheader', { name: 'Name' })
+    const firstRow = canvas.getByText('Color system').closest('tr')
+
+    expect(firstRow).not.toBeNull()
+    nameHeader.focus()
+    await userEvent.keyboard('{ArrowDown}')
+
+    await expect(within(firstRow!).getAllByRole('gridcell')[0]).toHaveFocus()
+  },
 }
 
 export const Hierarchy: Story = {

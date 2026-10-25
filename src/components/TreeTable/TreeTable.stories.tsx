@@ -540,6 +540,23 @@ export const Hierarchy: Story = {
     minTableWidth: '48rem',
   },
   render: (args) => <TreeTable {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const groupCell = canvas.getByRole('rowheader', { name: /Foundations/ })
+    const groupRow = groupCell.closest('tr')
+
+    expect(groupRow).not.toBeNull()
+    await expect(groupRow!).toHaveAttribute('aria-level', '1')
+    await expect(groupRow!).toHaveAttribute('aria-expanded', 'true')
+    await expect(canvas.getByText('Color system')).toBeInTheDocument()
+
+    groupCell.focus()
+    await userEvent.keyboard(' ')
+
+    await expect(groupRow!).toHaveAttribute('aria-expanded', 'false')
+    await expect(canvas.queryByText('Color system')).not.toBeInTheDocument()
+    await expect(groupCell).toHaveFocus()
+  },
 }
 
 export const ControlledExpansion: Story = {

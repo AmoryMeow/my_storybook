@@ -139,7 +139,7 @@ function HeaderContent<RowData>({
 }) {
   return (
     <div className="flex min-h-8 items-center justify-between gap-2">
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <div>{column.header}</div>
         {column.description && (
           <div className="mt-0.5 text-xs font-normal text-slate-500 dark:text-slate-400">

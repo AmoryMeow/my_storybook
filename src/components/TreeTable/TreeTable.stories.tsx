@@ -597,6 +597,54 @@ export const ControlledExpansion: Story = {
     getRowKey,
   },
   render: () => <ControlledExpansionExample />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement)
+    const foundationsRow = canvas.getByText('Foundations').closest('tr')
+    const patternsRow = canvas.getByText('Interaction patterns').closest('tr')
+
+    expect(foundationsRow).not.toBeNull()
+    expect(patternsRow).not.toBeNull()
+
+    await step('The controlled keys define the initial state', async () => {
+      await expect(
+        canvas.getByText('Expanded: foundations'),
+      ).toBeInTheDocument()
+      await expect(foundationsRow!).toHaveAttribute('aria-expanded', 'true')
+      await expect(patternsRow!).toHaveAttribute('aria-expanded', 'false')
+      await expect(canvas.getByText('Typography')).toBeInTheDocument()
+      await expect(canvas.queryByText('Body copy')).not.toBeInTheDocument()
+      await expect(canvas.queryByText('Disclosure')).not.toBeInTheDocument()
+    })
+
+    await step('Expand all updates the controlled state', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'Expand all' }))
+
+      await expect(
+        await canvas.findByText(
+          'Expanded: foundations, typography, patterns',
+        ),
+      ).toBeInTheDocument()
+      await expect(foundationsRow!).toHaveAttribute('aria-expanded', 'true')
+      await expect(patternsRow!).toHaveAttribute('aria-expanded', 'true')
+      await expect(canvas.getByText('Body copy')).toBeInTheDocument()
+      await expect(canvas.getByText('Disclosure')).toBeInTheDocument()
+    })
+
+    await step('Collapse all clears the controlled state', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Collapse all' }),
+      )
+
+      await expect(
+        await canvas.findByText('Expanded: none'),
+      ).toBeInTheDocument()
+      await expect(foundationsRow!).toHaveAttribute('aria-expanded', 'false')
+      await expect(patternsRow!).toHaveAttribute('aria-expanded', 'false')
+      await expect(canvas.queryByText('Typography')).not.toBeInTheDocument()
+      await expect(canvas.queryByText('Body copy')).not.toBeInTheDocument()
+      await expect(canvas.queryByText('Disclosure')).not.toBeInTheDocument()
+    })
+  },
 }
 
 export const ValueFormattingAndTotals: Story = {

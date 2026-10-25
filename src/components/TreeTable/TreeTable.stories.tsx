@@ -822,6 +822,112 @@ export const AddingRowsAndGroups: Story = {
     getRowKey,
   },
   render: () => <AddingRowsExample />,
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement)
+    const typographyRow = canvas.getByText('Typography').closest('tr')
+    const bodyCopyRow = canvas.getByText('Body copy').closest('tr')
+    const patternsRow = canvas.getByText('Interaction patterns').closest('tr')
+    const disclosureRow = canvas.getByText('Disclosure').closest('tr')
+
+    expect(typographyRow).not.toBeNull()
+    expect(bodyCopyRow).not.toBeNull()
+    expect(patternsRow).not.toBeNull()
+    expect(disclosureRow).not.toBeNull()
+
+    await step('A nested item is appended and opened for editing', async () => {
+      const addItemRow = bodyCopyRow!.nextElementSibling
+
+      expect(addItemRow).not.toBeNull()
+      await userEvent.click(
+        within(addItemRow as HTMLElement).getByRole('button', {
+          name: 'Add item',
+        }),
+      )
+
+      const editor = await canvas.findByRole('textbox', {
+        name: 'Edit Name for Untitled row',
+      })
+      const newRow = editor.closest('tr')
+      const nameCell = editor.closest('td')
+
+      expect(newRow).not.toBeNull()
+      expect(nameCell).not.toBeNull()
+      await waitFor(() => expect(editor).toHaveFocus())
+      await expect(newRow!).toHaveAttribute('aria-level', '3')
+      await expect(bodyCopyRow!.nextElementSibling).toBe(newRow)
+      await expect(typographyRow!).toHaveAttribute('aria-expanded', 'true')
+
+      await userEvent.type(editor, 'New type sample')
+      await userEvent.keyboard('{Enter}')
+
+      await expect(canvas.getByText('New type sample')).toBeInTheDocument()
+      await waitFor(() => expect(nameCell).toHaveFocus())
+    })
+
+    await step('A nested group is appended at its hierarchy level', async () => {
+      const addItemRow = disclosureRow!.nextElementSibling
+      const addGroupRow = addItemRow?.nextElementSibling
+
+      expect(addGroupRow).not.toBeNull()
+      await userEvent.click(
+        within(addGroupRow as HTMLElement).getByRole('button', {
+          name: 'Add subgroup',
+        }),
+      )
+
+      const editor = await canvas.findByRole('textbox', {
+        name: 'Edit Name for Untitled row',
+      })
+      const newGroupRow = editor.closest('tr')
+      const nameCell = editor.closest('td')
+
+      expect(newGroupRow).not.toBeNull()
+      expect(nameCell).not.toBeNull()
+      await waitFor(() => expect(editor).toHaveFocus())
+      await expect(newGroupRow!).toHaveAttribute('aria-level', '2')
+      await expect(newGroupRow!).toHaveAttribute('aria-expanded', 'false')
+      await expect(disclosureRow!.nextElementSibling).toBe(newGroupRow)
+      await expect(patternsRow!).toHaveAttribute('aria-expanded', 'true')
+
+      await userEvent.type(editor, 'New pattern group')
+      await userEvent.keyboard('{Enter}')
+
+      await expect(canvas.getByText('New pattern group')).toBeInTheDocument()
+      await waitFor(() => expect(nameCell).toHaveFocus())
+    })
+
+    await step('A root group is appended before the root action', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'Add group' }))
+
+      const editor = await canvas.findByRole('textbox', {
+        name: 'Edit Name for Untitled row',
+      })
+      const newRootRow = editor.closest('tr')
+      const nameCell = editor.closest('td')
+
+      expect(newRootRow).not.toBeNull()
+      expect(nameCell).not.toBeNull()
+      await waitFor(() => expect(editor).toHaveFocus())
+      await expect(newRootRow!).toHaveAttribute('aria-level', '1')
+      await expect(newRootRow!).toHaveAttribute('aria-expanded', 'false')
+      await expect(
+        patternsRow!.compareDocumentPosition(newRootRow!) &
+          Node.DOCUMENT_POSITION_FOLLOWING,
+      ).not.toBe(0)
+      await expect(
+        within(newRootRow!.nextElementSibling as HTMLElement).getByRole(
+          'button',
+          { name: 'Add group' },
+        ),
+      ).toBeInTheDocument()
+
+      await userEvent.type(editor, 'New root group')
+      await userEvent.keyboard('{Enter}')
+
+      await expect(canvas.getByText('New root group')).toBeInTheDocument()
+      await waitFor(() => expect(nameCell).toHaveFocus())
+    })
+  },
 }
 
 export const Loading: Story = {

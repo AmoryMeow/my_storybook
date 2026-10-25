@@ -562,6 +562,22 @@ export const Hierarchy: Story = {
     await expect(groupRow!).toHaveAttribute('aria-expanded', 'true')
     await expect(canvas.getByText('Color system')).toBeInTheDocument()
     await expect(groupCell).toHaveFocus()
+
+    const childCell = canvas.getByRole('rowheader', { name: 'Color system' })
+
+    await userEvent.keyboard('{ArrowDown}')
+
+    await expect(childCell).toHaveFocus()
+
+    await userEvent.keyboard('{ArrowLeft}')
+
+    await expect(groupCell).toHaveFocus()
+
+    await userEvent.keyboard('{ArrowLeft}')
+
+    await expect(groupRow!).toHaveAttribute('aria-expanded', 'false')
+    await expect(canvas.queryByText('Color system')).not.toBeInTheDocument()
+    await expect(groupCell).toHaveFocus()
   },
 }
 

@@ -1,5 +1,6 @@
 import { memo, useId, useMemo, useState, type ReactNode } from "react";
 
+import { paletteVar } from "../../palette";
 import { resolveChartData, type ResolvedChartData } from "./Chart.data";
 import { buildChartSummary, createDefaultValueFormatter } from "./Chart.format";
 import {
@@ -341,7 +342,7 @@ function LinePlot({
             x2={centres[activeIndex]}
             y1={plot.top}
             y2={plot.bottom}
-            stroke="var(--chart-axis)"
+            stroke={paletteVar("chart-axis")}
             strokeWidth={1}
             shapeRendering="crispEdges"
           />
@@ -366,7 +367,7 @@ function LinePlot({
                   cy={valueScale(value)}
                   r={5}
                   fill={color}
-                  stroke="var(--chart-surface)"
+                  stroke={paletteVar("surface")}
                   strokeWidth={2}
                 />
               );
@@ -479,7 +480,7 @@ const LineMarks = memo(function LineMarks({
                   cx={marker.x}
                   cy={marker.y}
                   r={4}
-                  fill="var(--chart-surface)"
+                  fill={paletteVar("surface")}
                   stroke={color}
                   strokeWidth={2}
                 />

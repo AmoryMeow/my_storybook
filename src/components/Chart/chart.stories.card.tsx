@@ -31,21 +31,21 @@ export function DemoChartCard({
   children,
 }: DemoChartCardProps) {
   return (
-    <section className="flex max-w-4xl flex-col gap-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+    <section className="flex max-w-4xl flex-col gap-6 rounded-xl border border-line bg-surface p-6 shadow-sm">
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h2 className="m-0 text-lg font-semibold text-slate-900 dark:text-slate-100">
+          <h2 className="m-0 text-lg font-semibold text-fg-strong">
             {title}
           </h2>
           {subtitle ? (
-            <p className="m-0 mt-1 text-sm text-slate-500 dark:text-slate-400">{subtitle}</p>
+            <p className="m-0 mt-1 text-sm text-fg-muted">{subtitle}</p>
           ) : null}
         </div>
         {periods ? (
           <select
             aria-label="Period"
             defaultValue={periods[0]}
-            className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:focus-visible:ring-blue-400"
+            className="rounded-md border border-line bg-surface-raised px-3 py-1.5 text-sm text-fg outline-none focus-visible:ring-2 focus-visible:ring-focus"
           >
             {periods.map((period) => (
               <option key={period}>{period}</option>
@@ -58,9 +58,9 @@ export function DemoChartCard({
         <dl className="m-0 grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-4">
           {kpis.map((kpi) => (
             <div key={kpi.label} className="flex flex-col gap-1">
-              <dt className="text-sm text-slate-500 dark:text-slate-400">{kpi.label}</dt>
+              <dt className="text-sm text-fg-muted">{kpi.label}</dt>
               <dd className="m-0 flex flex-wrap items-center gap-2">
-                <span className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
+                <span className="text-2xl font-semibold text-fg-strong">
                   {kpi.value}
                 </span>
                 {kpi.delta ? (

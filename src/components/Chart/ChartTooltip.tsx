@@ -104,7 +104,7 @@ export function ChartInteractionLayer({
         aria-roledescription="interactive chart"
         aria-label={`${label}. Use the arrow keys to read values for each period.`}
         tabIndex={0}
-        className="touch-pan-y rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-400"
+        className="touch-pan-y rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-focus"
         style={{
           position: "absolute",
           left: plot.left,
@@ -160,7 +160,7 @@ export function ChartTooltip({ anchor, bounds, children }: ChartTooltipProps) {
       ref={ref}
       data-chart-part="tooltip"
       aria-hidden="true"
-      className="z-10 rounded-md bg-slate-950 px-3 py-2 text-xs text-white shadow-lg dark:bg-slate-100 dark:text-slate-950"
+      className="z-10 rounded-md bg-surface-inverse px-3 py-2 text-xs text-fg-inverse shadow-lg"
       style={{
         position: "absolute",
         top: 0,
@@ -180,7 +180,7 @@ function DefaultTooltipContent({ context }: { context: ChartTooltipContext }) {
     <>
       <div className="font-semibold">{context.title}</div>
       {context.isPartial ? (
-        <div className="text-slate-400 dark:text-slate-500">Incomplete period</div>
+        <div className="text-fg-inverse-subtle">Incomplete period</div>
       ) : null}
       <table className="mt-1.5 border-collapse">
         <tbody>
@@ -192,10 +192,10 @@ function DefaultTooltipContent({ context }: { context: ChartTooltipContext }) {
                   style={{ backgroundColor: item.color }}
                 />
               </td>
-              <td className="py-0.5 pr-4 text-slate-300 dark:text-slate-600">{item.label}</td>
+              <td className="py-0.5 pr-4 text-fg-inverse-muted">{item.label}</td>
               <td className="py-0.5 text-right font-medium tabular-nums">
                 {item.formattedValue ?? (
-                  <span className="text-slate-400 dark:text-slate-500">No data</span>
+                  <span className="text-fg-inverse-subtle">No data</span>
                 )}
               </td>
             </tr>

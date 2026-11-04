@@ -12,7 +12,7 @@ import {
   type PlotGeometry,
   type ValueTick,
 } from "./Chart.layout";
-import { chartThemeClassName } from "./Chart.theme";
+import { paletteVar } from "../../palette";
 import type { ChartGrid, ValueFormatter } from "./Chart.types";
 import { useElementWidth } from "./useElementWidth";
 
@@ -112,7 +112,7 @@ export function ChartFrame({
     <figure
       aria-label={title}
       aria-busy={isLoading || undefined}
-      className={`${chartThemeClassName} m-0 flex min-w-0 flex-col gap-3 bg-(--chart-surface) text-(--chart-text) ${className ?? ""}`}
+      className={`m-0 flex min-w-0 flex-col gap-3 bg-surface text-fg ${className ?? ""}`}
     >
       <div
         ref={containerRef}
@@ -125,7 +125,7 @@ export function ChartFrame({
             role={isLoading ? "status" : undefined}
             aria-live={isLoading ? "polite" : undefined}
             data-chart-part={isLoading ? "loading" : "empty"}
-            className="flex h-full items-center justify-center gap-2 rounded-lg border border-dashed border-(--chart-axis) px-4 text-center text-sm text-(--chart-text-muted)"
+            className="flex h-full items-center justify-center gap-2 rounded-lg border border-dashed border-chart-axis px-4 text-center text-sm text-fg-muted"
           >
             {isLoading ? (
               <>
@@ -147,7 +147,7 @@ export function ChartFrame({
             role="status"
             aria-live="polite"
             data-chart-part="loading-overlay"
-            className="flex items-center justify-center gap-2 rounded-lg bg-white/75 text-sm font-medium text-slate-700 backdrop-blur-[1px] dark:bg-slate-950/70 dark:text-slate-200"
+            className="flex items-center justify-center gap-2 rounded-lg bg-surface-overlay text-sm font-medium text-fg backdrop-blur-[1px]"
             style={{ position: "absolute", inset: 0, zIndex: 20 }}
           >
             <Spinner />
@@ -193,7 +193,7 @@ export function ValueAxis({ plot, ticks, showGrid }: ValueAxisProps) {
         x2={plot.left}
         y1={plot.top}
         y2={plot.bottom}
-        stroke="var(--chart-axis)"
+        stroke={paletteVar("chart-axis")}
         strokeWidth={1}
         shapeRendering="crispEdges"
       />
@@ -209,7 +209,7 @@ export function ValueAxis({ plot, ticks, showGrid }: ValueAxisProps) {
               x2={plot.right}
               y1={tick.y}
               y2={tick.y}
-              stroke={tick.value === 0 ? "var(--chart-axis)" : "var(--chart-grid)"}
+              stroke={tick.value === 0 ? paletteVar("chart-axis") : paletteVar("chart-grid")}
               strokeWidth={1}
               shapeRendering="crispEdges"
             />
@@ -220,7 +220,7 @@ export function ValueAxis({ plot, ticks, showGrid }: ValueAxisProps) {
             x2={plot.left}
             y1={tick.y}
             y2={tick.y}
-            stroke="var(--chart-axis)"
+            stroke={paletteVar("chart-axis")}
             strokeWidth={1}
             shapeRendering="crispEdges"
           />
@@ -230,7 +230,7 @@ export function ValueAxis({ plot, ticks, showGrid }: ValueAxisProps) {
             dy="0.32em"
             textAnchor="end"
             fontSize={AXIS_FONT_SIZE}
-            fill="var(--chart-text-muted)"
+            fill={paletteVar("fg-muted")}
             className="tabular-nums"
           >
             {tick.label}
@@ -249,7 +249,7 @@ export function CategoryAxis({ plot, labels, plan, centres }: CategoryAxisProps)
         x2={plot.right}
         y1={plot.bottom}
         y2={plot.bottom}
-        stroke="var(--chart-axis)"
+        stroke={paletteVar("chart-axis")}
         strokeWidth={1}
         shapeRendering="crispEdges"
       />
@@ -265,7 +265,7 @@ export function CategoryAxis({ plot, labels, plan, centres }: CategoryAxisProps)
               x2={centres[index]}
               y1={plot.bottom}
               y2={plot.bottom + TICK_SIZE}
-              stroke="var(--chart-axis)"
+              stroke={paletteVar("chart-axis")}
               strokeWidth={1}
               shapeRendering="crispEdges"
             />
@@ -273,7 +273,7 @@ export function CategoryAxis({ plot, labels, plan, centres }: CategoryAxisProps)
               y={plot.bottom + 20}
               textAnchor="middle"
               fontSize={AXIS_FONT_SIZE}
-              fill="var(--chart-text-muted)"
+              fill={paletteVar("fg-muted")}
             >
               {/* A shortened label keeps its full name on hover. */}
               {isShortened ? <title>{labels[index]}</title> : null}
@@ -305,7 +305,7 @@ export function CategoryGrid({ plot, indices, centres }: CategoryGridProps) {
           x2={centres[index]}
           y1={plot.top}
           y2={plot.bottom}
-          stroke="var(--chart-grid)"
+          stroke={paletteVar("chart-grid")}
           strokeWidth={1}
           shapeRendering="crispEdges"
         />
@@ -337,7 +337,7 @@ export function ChartLegend({ items }: ChartLegendProps) {
 
 export function AxisTitles({ plot, height, categoryTitle, valueTitle }: AxisTitlesProps) {
   return (
-    <g data-chart-part="axis-titles" fontSize={AXIS_FONT_SIZE} fill="var(--chart-text-muted)">
+    <g data-chart-part="axis-titles" fontSize={AXIS_FONT_SIZE} fill={paletteVar("fg-muted")}>
       {categoryTitle ? (
         <text x={plot.left + plot.width / 2} y={height - 6} textAnchor="middle">
           {categoryTitle}
@@ -373,14 +373,14 @@ export function ChartDataTable({
   const table = (
     <table
       data-chart-part="data-table"
-      className="w-full border-separate border-spacing-0 text-sm text-slate-700 dark:text-slate-200"
+      className="w-full border-separate border-spacing-0 text-sm text-fg"
     >
       <caption className={visible ? "sr-only" : undefined}>{caption}</caption>
       <thead>
         <tr>
           <th
             scope="col"
-            className="sticky top-0 border-b border-slate-200 bg-slate-50 px-3 py-2 text-left font-semibold dark:border-slate-700 dark:bg-slate-800"
+            className="sticky top-0 border-b border-line bg-surface-muted px-3 py-2 text-left font-semibold"
           >
             {categoryHeader}
           </th>
@@ -388,7 +388,7 @@ export function ChartDataTable({
             <th
               key={item.key}
               scope="col"
-              className="sticky top-0 border-b border-slate-200 bg-slate-50 px-3 py-2 text-right font-semibold dark:border-slate-700 dark:bg-slate-800"
+              className="sticky top-0 border-b border-line bg-surface-muted px-3 py-2 text-right font-semibold"
             >
               {item.label}
             </th>
@@ -400,11 +400,11 @@ export function ChartDataTable({
           <tr key={index}>
             <th
               scope="row"
-              className="border-b border-slate-100 px-3 py-1.5 text-left font-normal dark:border-slate-800"
+              className="border-b border-line-subtle px-3 py-1.5 text-left font-normal"
             >
               {title}
               {partial[index] ? (
-                <span className="text-slate-500 dark:text-slate-400"> (incomplete)</span>
+                <span className="text-fg-muted"> (incomplete)</span>
               ) : null}
             </th>
             {series.map((item, seriesIndex) => {
@@ -412,10 +412,10 @@ export function ChartDataTable({
               return (
                 <td
                   key={item.key}
-                  className="border-b border-slate-100 px-3 py-1.5 text-right tabular-nums dark:border-slate-800"
+                  className="border-b border-line-subtle px-3 py-1.5 text-right tabular-nums"
                 >
                   {value === null ? (
-                    <span className="text-slate-400 dark:text-slate-500">No data</span>
+                    <span className="text-fg-subtle">No data</span>
                   ) : (
                     formatValue(value, { target: "tooltip" })
                   )}
@@ -437,7 +437,7 @@ export function ChartDataTable({
       tabIndex={0}
       role="region"
       aria-label={`${caption}, data table`}
-      className="max-h-80 overflow-auto rounded-lg border border-slate-200 outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:border-slate-700 dark:focus-visible:ring-blue-400"
+      className="max-h-80 overflow-auto rounded-lg border border-line outline-none focus-visible:ring-2 focus-visible:ring-focus"
     >
       {table}
     </div>

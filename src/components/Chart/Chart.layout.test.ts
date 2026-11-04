@@ -76,12 +76,12 @@ describe("estimateTextWidth", () => {
 
 describe("resolveSeriesColor", () => {
   it("assigns palette slots by position", () => {
-    expect(resolveSeriesColor(0)).toBe("var(--chart-series-1)");
-    expect(resolveSeriesColor(7)).toBe("var(--chart-series-8)");
+    expect(resolveSeriesColor(0)).toBe("var(--palette-chart-series-1)");
+    expect(resolveSeriesColor(7)).toBe("var(--palette-chart-series-8)");
   });
 
   it("falls back to a neutral color instead of cycling hues", () => {
-    expect(resolveSeriesColor(8)).toBe("var(--chart-series-overflow)");
+    expect(resolveSeriesColor(8)).toBe("var(--palette-chart-series-overflow)");
   });
 
   it("prefers an explicit color", () => {

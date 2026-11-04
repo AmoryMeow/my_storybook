@@ -1,5 +1,6 @@
 import { memo, useMemo, useState, type ReactNode } from "react";
 
+import { paletteVar } from "../../palette";
 import { resolveChartData, type ResolvedChartData } from "./Chart.data";
 import { buildChartSummary, createDefaultValueFormatter } from "./Chart.format";
 import {
@@ -278,7 +279,7 @@ function BarPlot({
             y={plot.top}
             width={step}
             height={plot.height}
-            fill="var(--chart-highlight)"
+            fill={paletteVar("chart-highlight")}
           />
         )}
         <PlotBackground

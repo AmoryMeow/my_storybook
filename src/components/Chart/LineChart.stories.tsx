@@ -251,11 +251,11 @@ export const ResponsiveContainer: Story<MonthlyFinancials> = {
   },
   render: (args) => (
     <div className="flex flex-col gap-6">
-      <p className="m-0 text-sm text-slate-600 dark:text-slate-300">
+      <p className="m-0 text-sm text-fg-secondary">
         Drag the bottom-right corner of the first box to resize it. The chart follows the
         container width, and labels thin out when space runs low.
       </p>
-      <div className="w-full max-w-full min-w-48 resize-x overflow-hidden rounded-lg border border-slate-300 p-3 dark:border-slate-700">
+      <div className="w-full max-w-full min-w-48 resize-x overflow-hidden rounded-lg border border-line-strong p-3">
         <LineChart {...args} />
       </div>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-6">
@@ -491,7 +491,7 @@ export const CustomTooltip: Story<MonthlyFinancials> = {
           <span className="font-semibold">{title}</span>
           <span className="text-sm font-semibold tabular-nums">{revenue.formattedValue}</span>
           {revenue.value !== null && revenue.previousValue !== null && previousTitle ? (
-            <span className="text-slate-300 dark:text-slate-600">
+            <span className="text-fg-inverse-muted">
               {percentChange(revenue.value, revenue.previousValue)} vs. {previousTitle}
             </span>
           ) : null}
@@ -532,7 +532,7 @@ export const DataTable: Story<MonthlyFinancials> = {
           type="button"
           aria-pressed={showTable}
           onClick={() => setShowTable((value) => !value)}
-          className="self-start rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:outline-none dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+          className="self-start rounded-md border border-line px-3 py-1.5 text-sm text-fg hover:bg-control-hover focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
         >
           {showTable ? "Hide table" : "Show as table"}
         </button>

@@ -89,13 +89,13 @@ function ValueTooltip({
     <TooltipTrigger delay={700} closeDelay={100}>
       <Button
         excludeFromTabOrder
-        className="max-w-full truncate rounded-sm text-inherit outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-1 dark:focus-visible:ring-blue-400"
+        className="max-w-full truncate rounded-sm text-inherit outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-1"
       >
         {children}
       </Button>
       <Tooltip
         placement="top"
-        className="max-w-sm rounded-md bg-slate-950 px-3 py-2 text-xs text-white shadow-lg dark:bg-slate-100 dark:text-slate-950"
+        className="max-w-sm rounded-md bg-surface-inverse px-3 py-2 text-xs text-fg-inverse shadow-lg"
       >
         {content}
       </Tooltip>
@@ -115,7 +115,7 @@ function HeaderContent<RowData>({
       <div className="min-w-0 flex-1">
         <div>{column.header}</div>
         {column.description && (
-          <div className="mt-0.5 text-xs font-normal text-slate-500 dark:text-slate-400">
+          <div className="mt-0.5 text-xs font-normal text-fg-muted">
             {column.description}
           </div>
         )}
@@ -152,13 +152,13 @@ function RowActionsMenu({
         aria-label={`Actions for ${rowLabel}`}
         onFocus={onFocus}
         onKeyDown={onKeyDown}
-        className="inline-flex size-8 items-center justify-center rounded-md text-slate-500 outline-none hover:bg-slate-200 hover:text-slate-900 data-[pressed]:bg-slate-300 focus-visible:ring-2 focus-visible:ring-blue-600 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-100 dark:data-[pressed]:bg-slate-600 dark:focus-visible:ring-blue-400"
+        className="inline-flex size-8 items-center justify-center rounded-md text-fg-muted outline-none hover:bg-control-hover hover:text-fg-strong data-[pressed]:bg-control-pressed focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-50"
       >
         <MoreIcon />
       </Button>
       <Popover
         placement="bottom end"
-        className="min-w-44 overflow-hidden rounded-lg border border-slate-200 bg-white p-1 shadow-xl dark:border-slate-700 dark:bg-slate-800"
+        className="min-w-44 overflow-hidden rounded-lg border border-line bg-surface-raised p-1 shadow-xl"
       >
         <Menu aria-label={`Actions for ${rowLabel}`} items={actions}>
           {(action) => (
@@ -173,9 +173,9 @@ function RowActionsMenu({
               className={({ isFocused, isDisabled }) =>
                 `flex cursor-default items-center gap-2 rounded-md px-3 py-2 text-sm outline-none ${
                   action.destructive
-                    ? "text-red-700 dark:text-red-400"
-                    : "text-slate-700 dark:text-slate-200"
-                } ${isFocused ? "bg-slate-100 dark:bg-slate-700" : ""} ${
+                    ? "text-fg-danger"
+                    : "text-fg"
+                } ${isFocused ? "bg-control-hover" : ""} ${
                   isDisabled ? "opacity-50" : ""
                 }`
               }
@@ -299,7 +299,7 @@ function TreeTableCellContent<RowData>({
       rel={link.rel}
       download={link.download}
       onClick={link.onClick}
-      className="block max-w-full truncate rounded-sm text-blue-700 underline decoration-blue-300 underline-offset-2 outline-none hover:decoration-blue-700 focus-visible:ring-2 focus-visible:ring-blue-600 dark:text-blue-300 dark:decoration-blue-700 dark:hover:decoration-blue-300 dark:focus-visible:ring-blue-400"
+      className="block max-w-full truncate rounded-sm text-fg-link underline decoration-link-underline underline-offset-2 outline-none hover:decoration-fg-link focus-visible:ring-2 focus-visible:ring-focus"
     >
       {displayValue}
     </a>
@@ -309,7 +309,7 @@ function TreeTableCellContent<RowData>({
     <Button
       excludeFromTabOrder
       onPress={startEditing}
-      className={`flex h-full w-full min-w-0 items-center rounded-sm text-inherit outline-none hover:underline focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-400 ${contentAlignmentClasses[align]}`}
+      className={`flex h-full w-full min-w-0 items-center rounded-sm text-inherit outline-none hover:underline focus-visible:ring-2 focus-visible:ring-focus ${contentAlignmentClasses[align]}`}
     >
       <span className="truncate">{displayValue}</span>
     </Button>
@@ -317,7 +317,7 @@ function TreeTableCellContent<RowData>({
     <Button
       excludeFromTabOrder
       onPress={() => column.onPress?.(row)}
-      className="max-w-full truncate rounded-sm text-inherit outline-none hover:underline focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-400"
+      className="max-w-full truncate rounded-sm text-inherit outline-none hover:underline focus-visible:ring-2 focus-visible:ring-focus"
     >
       {displayValue}
     </Button>
@@ -348,7 +348,7 @@ function TreeTableCellContent<RowData>({
               excludeFromTabOrder
               onPress={onToggle}
               aria-label={`${isExpanded ? "Collapse" : "Expand"} ${rowLabel}`}
-              className="inline-flex size-7 items-center justify-center rounded-md text-slate-500 outline-none hover:bg-slate-200 data-[pressed]:bg-slate-300 focus-visible:ring-2 focus-visible:ring-blue-600 dark:text-slate-400 dark:hover:bg-slate-700 dark:data-[pressed]:bg-slate-600 dark:focus-visible:ring-blue-400"
+              className="inline-flex size-7 items-center justify-center rounded-md text-fg-muted outline-none hover:bg-control-hover data-[pressed]:bg-control-pressed focus-visible:ring-2 focus-visible:ring-focus"
             >
               <ChevronIcon expanded={isExpanded} />
             </Button>
@@ -412,8 +412,8 @@ function TreeTableCellContent<RowData>({
               }}
                     className={`absolute inset-0 box-border h-full w-full min-w-0 border-0 bg-transparent p-0 text-inherit outline-none disabled:cursor-not-allowed disabled:opacity-60 ${alignmentClasses[align]} ${
                 error
-                  ? "shadow-[inset_0_-2px_0_0_var(--color-red-500)]"
-                  : "focus:shadow-[inset_0_-2px_0_0_var(--color-blue-600)] dark:focus:shadow-[inset_0_-2px_0_0_var(--color-blue-400)]"
+                  ? "shadow-[inset_0_-2px_0_0_var(--palette-line-invalid)]"
+                  : "focus:shadow-[inset_0_-2px_0_0_var(--palette-focus)]"
               }`}
             />
             {error && (
@@ -470,7 +470,7 @@ function AddActionButton({
         onFocus={onFocus}
         onKeyDown={onKeyDown}
         onPress={action.onAction}
-        className="inline-flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-normal text-slate-500 outline-none hover:bg-slate-100 hover:text-slate-800 data-[pressed]:bg-slate-200 focus-visible:ring-2 focus-visible:ring-blue-600 disabled:cursor-not-allowed disabled:opacity-50 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200 dark:data-[pressed]:bg-slate-700 dark:focus-visible:ring-blue-400"
+        className="inline-flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-normal text-fg-muted outline-none hover:bg-control-hover hover:text-fg-strong data-[pressed]:bg-control-pressed focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-50"
       >
         <PlusIcon group={action.kind === "group"} className="size-5" />
         {action.label}
@@ -885,7 +885,7 @@ export function TreeTable<RowData>({
           <td
             role="gridcell"
             colSpan={totalColumnCount}
-            className="border-b border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900"
+            className="border-b border-line bg-surface"
           >
             <AddActionButton
               action={action}
@@ -929,7 +929,7 @@ export function TreeTable<RowData>({
         role="row"
         aria-level={hasHierarchy ? depth + 1 : undefined}
         aria-expanded={hasHierarchy && hasChildItems ? expanded : undefined}
-        className="group h-12 outline-none hover:bg-slate-50 dark:hover:bg-slate-800"
+        className="group h-12 outline-none hover:bg-surface-hover"
       >
         {columns.map((column, columnIndex) => {
           const displayValue = renderColumnValue(column, row, locale);
@@ -955,8 +955,8 @@ export function TreeTable<RowData>({
                   : "z-0";
           const backgroundClass =
             column.isSummary || total
-              ? "bg-indigo-50 dark:bg-indigo-950/40"
-              : "bg-white group-hover:bg-slate-50 dark:bg-slate-900 dark:group-hover:bg-slate-800";
+              ? "bg-surface-summary"
+              : "bg-surface group-hover:bg-surface-hover";
 
           return (
             <td
@@ -1031,7 +1031,7 @@ export function TreeTable<RowData>({
                   ? { bottom: stickyTotalOffset }
                   : undefined),
               }}
-              className={`relative box-border min-w-24 border-b border-slate-200 p-0 align-middle text-slate-700 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600 dark:border-slate-700 dark:text-slate-200 dark:focus-visible:ring-blue-400 ${
+              className={`relative box-border min-w-24 border-b border-line p-0 align-middle text-fg outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus ${
                 total ? "h-12 font-semibold" : ""
               } ${backgroundClass} ${stickyClasses} ${zIndexClass}`}
             >
@@ -1104,7 +1104,7 @@ export function TreeTable<RowData>({
                 hasChildItems,
               );
             }}
-            className={`border-b border-slate-200 bg-white px-3 py-2 text-center outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600 group-hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:focus-visible:ring-blue-400 dark:group-hover:bg-slate-800 ${
+            className={`border-b border-line bg-surface px-3 py-2 text-center outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus group-hover:bg-surface-hover ${
               stickyTotalOffset !== undefined ? "sticky z-10" : ""
             }`}
             style={
@@ -1172,13 +1172,13 @@ export function TreeTable<RowData>({
         }
       }}
     >
-      <div className="relative w-full overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
+      <div className="relative w-full overflow-x-auto rounded-lg border border-line bg-surface shadow-sm">
         <table
           role={hasHierarchy ? "treegrid" : "grid"}
           aria-label={caption}
           aria-busy={isLoading || undefined}
           inert={isLoading && rows.length > 0 ? true : undefined}
-          className="w-full border-separate border-spacing-0 text-sm text-slate-700 dark:text-slate-200 [&_tbody>tr:last-child>td:first-child]:rounded-es-lg [&_tbody>tr:last-child>td:last-child]:rounded-ee-lg"
+          className="w-full border-separate border-spacing-0 text-sm text-fg [&_tbody>tr:last-child>td:first-child]:rounded-es-lg [&_tbody>tr:last-child>td:last-child]:rounded-ee-lg"
           style={{ minWidth: minTableWidth }}
         >
           <thead>
@@ -1218,7 +1218,7 @@ export function TreeTable<RowData>({
                       handleHeaderKeyDown(event, columnIndex)
                     }
                     style={style}
-                    className={`border-b border-slate-200 px-4 py-3 font-semibold whitespace-nowrap text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600 dark:border-slate-700 dark:text-slate-100 dark:focus-visible:ring-blue-400 ${
+                    className={`border-b border-line px-4 py-3 font-semibold whitespace-nowrap text-fg-strong outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus ${
                       columnIndex === 0 ? "rounded-ss-lg" : ""
                     } ${
                       !hasActionsColumn && columnIndex === columns.length - 1
@@ -1226,8 +1226,8 @@ export function TreeTable<RowData>({
                         : ""
                     } ${alignmentClasses[column.align ?? "start"]} ${
                       column.isSummary
-                        ? "bg-indigo-100 dark:bg-indigo-950"
-                        : "bg-slate-50 dark:bg-slate-800"
+                        ? "bg-surface-summary-header"
+                        : "bg-surface-muted"
                     } ${sticky ? "sticky" : ""} ${
                       isTreeColumn && stickyFirstColumn ? "z-50" : "z-40"
                     }`}
@@ -1249,7 +1249,7 @@ export function TreeTable<RowData>({
                                 allExpanded ? new Set() : expandableKeys,
                               )
                             }
-                            className="inline-flex size-8 items-center justify-center rounded-md border border-slate-300 bg-white text-slate-600 shadow-sm outline-none hover:bg-slate-100 data-[pressed]:bg-slate-200 focus-visible:ring-2 focus-visible:ring-blue-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-700 dark:data-[pressed]:bg-slate-600 dark:focus-visible:ring-blue-400"
+                            className="inline-flex size-8 items-center justify-center rounded-md border border-line-strong bg-surface text-fg-secondary shadow-sm outline-none hover:bg-control-hover data-[pressed]:bg-control-pressed focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             <ChevronIcon expanded={allExpanded} />
                           </Button>
@@ -1283,7 +1283,7 @@ export function TreeTable<RowData>({
                     handleHeaderKeyDown(event, columns.length)
                   }
                   style={stickyHeader ? { top: stickyHeaderOffset } : undefined}
-                  className={`w-14 rounded-se-lg border-b border-slate-200 bg-slate-50 px-3 py-3 text-center font-semibold text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus-visible:ring-blue-400 ${
+                  className={`w-14 rounded-se-lg border-b border-line bg-surface-muted px-3 py-3 text-center font-semibold text-fg-strong outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus ${
                     stickyHeader ? "sticky z-40" : ""
                   }`}
                 >
@@ -1302,7 +1302,7 @@ export function TreeTable<RowData>({
                   <div
                     role={isLoading ? "status" : undefined}
                     aria-live={isLoading ? "polite" : undefined}
-                    className="flex min-h-28 items-center justify-center gap-2 px-6 py-8 text-sm text-slate-500 dark:text-slate-400"
+                    className="flex min-h-28 items-center justify-center gap-2 px-6 py-8 text-sm text-fg-muted"
                   >
                     {isLoading && <Spinner />}
                     {isLoading ? loadingLabel : emptyContent}
@@ -1317,7 +1317,7 @@ export function TreeTable<RowData>({
           <div
             role="status"
             aria-live="polite"
-            className="absolute inset-0 z-[60] flex items-center justify-center gap-2 bg-white/75 text-sm font-medium text-slate-700 backdrop-blur-[1px] dark:bg-slate-950/70 dark:text-slate-200"
+            className="absolute inset-0 z-[60] flex items-center justify-center gap-2 bg-surface-overlay text-sm font-medium text-fg backdrop-blur-[1px]"
           >
             <Spinner />
             {loadingLabel}

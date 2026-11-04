@@ -12,7 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Chevrons: Story = {
   render: () => (
-    <div className="flex items-center gap-6 text-slate-700 dark:text-slate-200">
+    <div className="flex items-center gap-6 text-fg">
       <div className="flex items-center gap-2">
         <ChevronIcon className="size-6" />
         Collapsed
@@ -26,12 +26,12 @@ export const Chevrons: Story = {
 };
 
 export const MoreActions: Story = {
-  render: () => <MoreIcon className="size-8 text-slate-700 dark:text-slate-200" />,
+  render: () => <MoreIcon className="size-8 text-fg" />,
 };
 
 export const AddActions: Story = {
   render: () => (
-    <div className="flex items-center gap-6 text-slate-700 dark:text-slate-200">
+    <div className="flex items-center gap-6 text-fg">
       <div className="flex items-center gap-2">
         <PlusIcon className="size-6" />
         Row

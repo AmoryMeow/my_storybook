@@ -242,7 +242,7 @@ function ControlledExpansionExample() {
         bulkExpansion
         minTableWidth="48rem"
       />
-      <p aria-live="polite" className="text-sm text-slate-600 dark:text-slate-300">
+      <p aria-live="polite" className="text-sm text-fg-secondary">
         Expanded: {[...expandedKeys].join(', ') || 'none'}
       </p>
     </div>
@@ -327,7 +327,7 @@ function EditingExample() {
 
   return (
     <div className="space-y-3">
-      <p className="text-sm text-slate-600 dark:text-slate-300">
+      <p className="text-sm text-fg-secondary">
         Press Enter or double-click an editable cell. The first budget is read-only and the last is disabled.
       </p>
       <TreeTable
@@ -404,7 +404,7 @@ function ActionsAndLinksExample() {
         ]}
         minTableWidth="48rem"
       />
-      <p aria-live="polite" className="text-sm text-slate-600 dark:text-slate-300">
+      <p aria-live="polite" className="text-sm text-fg-secondary">
         {lastAction}
       </p>
     </div>

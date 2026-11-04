@@ -33,6 +33,12 @@ const preview: Preview = {
   },
   initialGlobals: { theme: 'system' },
   decorators: [withTheme],
+  parameters: {
+    options: {
+      // Storybook opens the first story; without this, file paths decide and a component comes first.
+      storySort: { order: ['Welcome', 'Foundations', 'Components'] },
+    },
+  },
 }
 
 export default preview

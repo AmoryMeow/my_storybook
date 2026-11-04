@@ -12,6 +12,7 @@ import { Button } from "../Button";
 import { Menu, MenuItem, MenuTrigger, Popover } from "../Menu";
 import { Tooltip, TooltipTrigger } from "../Tooltip";
 import { ChevronIcon, MoreIcon, PlusIcon } from "../icons";
+import { Spinner } from "../Spinner";
 
 import type {
   TreeTableAddAction,
@@ -75,34 +76,6 @@ function getEditorInputMode<RowData>(column: TreeTableColumn<RowData>) {
     return "decimal" as const;
   }
   return "text" as const;
-}
-
-function Spinner() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className="size-5 animate-spin motion-reduce:animate-none"
-    >
-      <circle
-        cx="12"
-        cy="12"
-        r="9"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-        className="opacity-25"
-      />
-      <path
-        d="M21 12a9 9 0 0 0-9-9"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="3"
-        className="opacity-90"
-      />
-    </svg>
-  );
 }
 
 function ValueTooltip({

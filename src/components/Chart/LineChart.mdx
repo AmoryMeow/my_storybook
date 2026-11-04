@@ -1,0 +1,90 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks";
+
+import { LineChart } from "./index";
+import * as LineChartStories from "./LineChart.stories";
+
+<Meta of={LineChartStories} />
+
+# LineChart
+
+Shows how one or more values change over time, such as revenue by month or conversion by day. For comparing amounts between categories, use [BarChart](?path=/docs/components-barchart--docs).
+
+<Canvas of={LineChartStories.MultipleLines} />
+
+```tsx
+import { LineChart } from "../components/Chart";
+
+<LineChart
+  title="Revenue and costs by month"
+  data={transactions}
+  getDate={(row) => row.date}
+  period="month"
+  series={[
+    { key: "revenue", label: "Revenue", value: (row) => row.revenue },
+    { key: "costs", label: "Costs", value: (row) => row.costs },
+  ]}
+/>
+```
+
+## Data and series
+
+`data` is a list of records in any shape. Each entry of `series` reads one number from a record with `value`, so one list of records can feed several lines. Return `null` or `undefined` for a missing value: the line breaks there instead of dropping to zero.
+
+<Canvas of={LineChartStories.MissingData} />
+
+## Time axis
+
+With `getDate` and `period`, records are grouped into continuous periods: `day`, `week`, `month` or `quarter`. Dates can be `Date` objects, timestamps or ISO strings, in any order.
+
+- **Aggregation.** When several records fall into one period, each series combines them with its `aggregate`: `sum` (default, for flows such as revenue), `average` (rates), `last` or `first` (balances), `min`, `max`, or a function.
+- **Gaps.** A period without records stays empty rather than being skipped.
+- **Window.** `timeRange` fixes the visible periods, for example the last 12 months.
+- **Incomplete periods.** A period the data only partly cover, such as the current month, is drawn dashed and labelled in the tooltip and table, because its total is not comparable with full periods. Turn this off with `markPartialPeriods={false}`.
+- **Labels.** Period labels follow `locale`; `formatPeriod` replaces them, with a short variant for the axis and a complete one for the tooltip.
+- `weekStartsOn` and `timeZone` decide how dates fall into periods.
+
+<Canvas of={LineChartStories.PeriodGranularity} />
+
+<Canvas of={LineChartStories.IncompletePeriods} />
+
+## Category axis
+
+With `getCategory` instead of `getDate`, each record is one point, in the order given. Use it when the axis is not time.
+
+## Values and formatting
+
+The value axis picks round ticks and spaces them evenly. `formatValue` formats every value; its second argument says where the value appears (`target: "axis"` or `"tooltip"`) and, on the axis, the distance between ticks (`step`). Pass `step` to `getTickSignificantDigits` to show just enough digits for neighbouring labels to differ.
+
+By default the axis fits the data; `includeZero` starts it at zero.
+
+<Canvas of={LineChartStories.NarrowValueRange} />
+
+## Appearance
+
+`area` fills under each line, `curve="monotone"` smooths it without inventing peaks or dips, and `showMarkers` toggles the point markers. `grid` chooses horizontal, both or no gridlines, and `categoryAxisLabel` / `valueAxisLabel` add axis titles. The chart fills the width of its container; `height` sets its height.
+
+<Canvas of={LineChartStories.AreaAndSmoothCurve} />
+
+Series take the [palette](?path=/story/foundations-palette--palette)'s chart colors in order. The first four stay distinguishable from one another for color-blind readers; beyond that, readers rely on the legend and tooltip. `color` on a series overrides its color.
+
+## Tooltip
+
+Hovering, touching or using the arrow keys shows every series' value for the period. The tooltip always stays inside the chart. `renderTooltip` replaces its content and receives the values of the previous period, for comparisons. `tooltip={false}` turns it off.
+
+<Canvas of={LineChartStories.CustomTooltip} />
+
+## Accessibility
+
+- `title` names the chart; `description` (or a generated summary) describes it.
+- The plot can be focused: arrow keys move between periods, Home and End jump to the ends, Escape hides the tooltip, and each move is announced.
+- The chart's data is always available as a table to screen readers. `dataTable="visible"` shows it, for example behind a "Show as table" button.
+
+<Canvas of={LineChartStories.DataTable} />
+
+## Loading and empty states
+
+`isLoading` shows a placeholder before the first data, and an overlay while new data load. `emptyContent` replaces the message shown when there is nothing to draw.
+
+## Props
+
+<ArgTypes of={LineChart} />

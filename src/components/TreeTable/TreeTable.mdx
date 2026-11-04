@@ -1,0 +1,88 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks";
+
+import { TreeTable } from "./index";
+import * as TreeTableStories from "./TreeTable.stories";
+
+<Meta of={TreeTableStories} />
+
+# TreeTable
+
+A table for flat or nested records, such as budgets broken down by department and line item. Rows can be expanded and collapsed, values are formatted for the locale, and cells can be edited in place.
+
+<Canvas of={TreeTableStories.Hierarchy} />
+
+```tsx
+import { TreeTable } from "../components/TreeTable";
+
+<TreeTable
+  caption="Budget by department"
+  rows={departments}
+  getRowKey={(row) => row.id}
+  getChildren={(row) => row.children}
+  columns={[
+    { key: "name", header: "Name", type: "text", value: (row) => row.name },
+    { key: "budget", header: "Budget", type: "currency", currency: "USD", value: (row) => row.budget },
+  ]}
+/>
+```
+
+## Rows and hierarchy
+
+Pass `getRowKey` to identify rows. Add `getChildren` to show a hierarchy: a row with children becomes a group that expands and collapses, and the table switches to the ARIA treegrid pattern. Without it, the table is a flat grid.
+
+Expansion is uncontrolled by default (`defaultExpandedKeys`). Pass `expandedKeys` and `onExpandedChange` to control it, and `bulkExpansion` to show an expand all / collapse all control.
+
+<Canvas of={TreeTableStories.ControlledExpansion} />
+
+## Columns
+
+Each column has a `type` that decides how its value is formatted:
+
+| Type | Formats as | Extra options |
+| --- | --- | --- |
+| `text` | plain text | `formatValue` |
+| `integer`, `decimal` | locale number | `numberFormat`, `formatValue` |
+| `percentage` | locale percent | `numberFormat`, `formatValue` |
+| `currency` | locale currency | `currency` |
+| `unit` | number with a unit | `unit`, `unitDisplay` |
+| `custom` | whatever `renderCell` returns | `renderCell` |
+
+Mark a column with `isSummary` to highlight it, and rows with `isTotalRow` to style totals; `stickyTotalRows` keeps totals visible while scrolling.
+
+<Canvas of={TreeTableStories.ValueFormattingAndTotals} />
+
+## Editing
+
+Give a column an `edit` configuration to make its cells editable. `onCommit` receives the new value; `validate` returns an error message to keep the editor open; `isEditable`, `isReadOnly` and `isDisabled` decide per row.
+
+<Canvas of={TreeTableStories.InlineEditing} />
+
+## Actions and links
+
+`getRowActions` adds a menu to each row; an action can run a callback or be a link, and `destructive` styles it as dangerous. `getAddActions` adds "Add row" and "Add group" buttons at the root and inside groups. Columns can also turn cells into links (`getLink`) or buttons (`onPress`).
+
+<Canvas of={TreeTableStories.ActionsAndLinks} />
+
+## Loading and empty states
+
+`isLoading` shows a placeholder while there are no rows, and an overlay over the current rows while they refresh. `emptyContent` replaces the default message when there is nothing to show.
+
+<Canvas of={TreeTableStories.Loading} />
+
+## Keyboard and accessibility
+
+The table uses native table semantics; `caption` names it for assistive technology.
+
+| Key | Action |
+| --- | --- |
+| Arrow keys | Move between visible cells |
+| Home / End | Move to the first / last cell of the row |
+| Ctrl+Home / Ctrl+End | Move to the first / last cell of the grid |
+| Left / Right on a group | Collapse / expand it |
+| Space on a group | Toggle it |
+| Enter | Start editing, follow a link or run the cell action |
+| Enter / Escape in an editor | Commit / cancel and restore focus |
+
+## Props
+
+<ArgTypes of={TreeTable} />

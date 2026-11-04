@@ -2,6 +2,8 @@
 
 A personal collection of reusable React components, UI experiments, and accessibility-focused implementations, built with React, TypeScript, Vite, Tailwind CSS v4, and Storybook.
 
+**Demo:** [amorymeow.github.io/my_storybook](https://amorymeow.github.io/my_storybook/)
+
 ```
 src/
   components/   independent components, each with its stories and tests
@@ -16,7 +18,7 @@ Global styles are loaded from `src/index.css`, which imports Tailwind and the pa
 - **TreeTable** — treegrid for flat or nested records, with inline editing and keyboard navigation (`src/components/TreeTable`)
 - **LineChart** and **BarChart** — SVG charts over a time or category axis (`src/components/Chart`)
 
-Usage and options are shown in each component's Storybook stories.
+Each component has a Docs page in Storybook with usage, options and live examples.
 
 ## Palette and themes
 
@@ -47,7 +49,7 @@ npm run storybook
 
 Use the **Theme** control in the toolbar to view components in the light or dark theme without changing the device or browser setting. The choice is kept in the URL, so a shared link opens in the same theme.
 
-Pushes to `main` build Storybook and deploy it to GitHub Pages (`.github/workflows/deploy-storybook.yml`). Create a production build locally with:
+Pushes to `main` build Storybook and deploy it to [GitHub Pages](https://amorymeow.github.io/my_storybook/) (`.github/workflows/deploy-storybook.yml`). Create a production build locally with:
 
 ```sh
 npm run build-storybook

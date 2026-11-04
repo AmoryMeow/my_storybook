@@ -1,0 +1,54 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks";
+
+import { BarChart } from "./index";
+import * as BarChartStories from "./BarChart.stories";
+
+<Meta of={BarChartStories} />
+
+# BarChart
+
+Compares amounts between categories or periods, such as revenue by region or orders by month. Several series are drawn side by side within each category. For a trend over many periods, [LineChart](?path=/docs/components-linechart--docs) is usually easier to read.
+
+<Canvas of={BarChartStories.GroupedBars} />
+
+```tsx
+import { BarChart } from "../components/Chart";
+
+<BarChart
+  title="Revenue by region"
+  data={regions}
+  getCategory={(row) => row.region}
+  series={[
+    { key: "revenue", label: "Revenue", value: (row) => row.revenue },
+    { key: "target", label: "Target", value: (row) => row.target },
+  ]}
+/>
+```
+
+BarChart shares its data, axis, formatting, tooltip and accessibility options with LineChart; see the [LineChart docs](?path=/docs/components-linechart--docs) for the time axis, aggregation, incomplete periods and `formatValue`. What differs for bars is below.
+
+## Baseline
+
+Bars always grow from zero, so the value axis always includes zero. Negative values grow downward from the same baseline; a zero value draws no bar, and a missing value leaves an empty slot.
+
+<Canvas of={BarChartStories.NegativeAndZeroValues} />
+
+## Categories
+
+With `getCategory`, every category keeps its label: long names wrap onto a second line and are shortened with an ellipsis if they still do not fit, with the full name on hover.
+
+<Canvas of={BarChartStories.ManyCategories} />
+
+## Periods
+
+With `getDate` and `period`, bars show totals per day, week, month or quarter. An incomplete period, such as the current month, is drawn lighter with a dashed outline so its smaller total is not mistaken for a drop.
+
+<Canvas of={BarChartStories.IncompletePeriods} />
+
+## Appearance
+
+`maxBarWidth` caps the width of a bar (40px by default); spare space goes between groups rather than into wider bars. `grid` accepts `"y"` or `"none"`: vertical gridlines would cut through grouped bars.
+
+## Props
+
+<ArgTypes of={BarChart} />

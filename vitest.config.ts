@@ -2,6 +2,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
+import tailwindcss from "@tailwindcss/vite";
 import { playwright } from "@vitest/browser-playwright";
 import { defineConfig } from "vitest/config";
 
@@ -20,6 +21,9 @@ export default defineConfig({
       {
         extends: true,
         plugins: [
+          // vite.config.ts is not loaded when vitest.config.ts exists, so the
+          // stories would otherwise render without any utility classes.
+          tailwindcss(),
           storybookTest({
             configDir: path.join(currentDirectory, ".storybook"),
           }),

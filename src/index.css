@@ -1,1 +1,10 @@
 @import "tailwindcss";
+@import "./palette/palette.css";
+
+@layer base {
+  /* Every page, Storybook canvas included, sits on the theme's surface. */
+  body {
+    background-color: var(--palette-surface);
+    color: var(--palette-fg);
+  }
+}

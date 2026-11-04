@@ -13,7 +13,8 @@
     "test:storybook": "vitest run --project=storybook",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "palette": "node scripts/generate-palette-css.ts"
   },
   "dependencies": {
     "d3-scale": "^4.0.2",
